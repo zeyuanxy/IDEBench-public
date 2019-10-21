@@ -1,0 +1,304 @@
+{
+    "tables": {
+        "fact": {
+            "name": "tbl_mimic",
+            "fields": [
+                {
+                    "field": "idx",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "infectious",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "metabolic",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "blood",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "neurologic",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "heart_hypertensive",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "heart_ischemic",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "heart_failure",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "pulmonary",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "digestive",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "renal_insufficiency",
+                    "type": "categorical",
+                    "cast": "int"
+                },
+                {
+                    "field": "sex",
+                    "type": "categorical"
+                },
+                {
+                    "field": "age",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "race",
+                    "type": "categorical"
+                },
+                {
+                    "field": "marital",
+                    "type": "categorical"
+                },
+                {
+                    "field": "height",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "weight",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "bmi",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "temperature",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "heart_rate",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "resp_rate",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "systolic_bp",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "diastolic_bp",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "spo2",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "sapsi",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "sofa",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "gcs",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "braden",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "sodium",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "potassium",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "chloride",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "magnesium",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "calcium",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "anion_gap",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "bun",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "creatinine",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "glucose",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "ph",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "be",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "total_co2",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "total_o2",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "pco2",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "po2",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "wbc",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "rbc",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "hgb",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "hct",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "mcv",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "mch",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "mchc",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "rdw",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "plates",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "neuts",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "lymphs",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "monos",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "basos",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "eos",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "pt",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "inr_pt",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "ptt",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "ckmb",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "cpkmb",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "ldh",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "bnp",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "tropi",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "tropt",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "total_bili",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "direct_bili",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "indirect_bili",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "albumin",
+                    "type": "quantitative"
+                },
+                {
+                    "field": "tg",
+                    "type": "quantitative"
+                }
+            ]
+        }
+    }
+}

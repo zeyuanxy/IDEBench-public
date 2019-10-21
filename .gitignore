@@ -111,3 +111,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# monetdb
+monetdb/
+
+# IDEA
+.idea/
