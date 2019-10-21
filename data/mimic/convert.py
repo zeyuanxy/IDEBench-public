@@ -78,9 +78,9 @@ def workflow_to_job(workflow):
                                          group_by_columns=group_by_columns)
 
     if has_filter:
-        input_index = 0
-    else:
         input_index = 1
+    else:
+        input_index = 0
     aggregation_step = StepDescription(
         operator=operator_pb2.OperatorDescription(aggregation=aggregation),
         inputs=[StepInputDescription(type=InputType.Value('STEP'), index=input_index)])

@@ -1,0 +1,334 @@
+{
+    "nextAction": {
+        "values": [
+            "workflowgen.selectionaction.SelectionAction",
+            "workflowgen.filteraction.FilterAction",
+            "workflowgen.linkaction.LinkAction",
+            "workflowgen.vizaction.VizAction"
+        ],
+        "pd": [
+            0.0,
+            0.7,
+            0.0,
+            0.3
+        ]
+    },
+    "numBinDimensionsPerViz": {
+        "values": [
+            1,
+            2
+        ],
+        "pd": [
+            0.65,
+            0.35
+        ]
+    },
+    "numFiltersPerViz": {
+        "values": [
+            1,
+            2,
+            3
+        ],
+        "pd": [
+            0.5,
+            0.25,
+            0.25
+        ]
+    },
+    "perBinAggregates": {
+        "values": [
+            "count",
+            "avg"
+        ],
+        "pd": [
+            0.8,
+            0.2
+        ]
+    },
+    "dimensions": [
+        {
+            "name": "idx",
+            "p": 1
+        },
+        {
+            "name": "infectious",
+            "p": 1
+        },
+        {
+            "name": "metabolic",
+            "p": 1
+        },
+        {
+            "name": "blood",
+            "p": 1
+        },
+        {
+            "name": "neurologic",
+            "p": 1
+        },
+        {
+            "name": "heart_hypertensive",
+            "p": 1
+        },
+        {
+            "name": "heart_ischemic",
+            "p": 1
+        },
+        {
+            "name": "heart_failure",
+            "p": 1
+        },
+        {
+            "name": "pulmonary",
+            "p": 1
+        },
+        {
+            "name": "digestive",
+            "p": 1
+        },
+        {
+            "name": "renal_insufficiency",
+            "p": 1
+        },
+        {
+            "name": "sex",
+            "p": 1
+        },
+        {
+            "name": "age",
+            "p": 1
+        },
+        {
+            "name": "race",
+            "p": 1
+        },
+        {
+            "name": "marital",
+            "p": 1
+        },
+        {
+            "name": "height",
+            "p": 1
+        },
+        {
+            "name": "weight",
+            "p": 1
+        },
+        {
+            "name": "bmi",
+            "p": 1
+        },
+        {
+            "name": "temperature",
+            "p": 1
+        },
+        {
+            "name": "heart_rate",
+            "p": 1
+        },
+        {
+            "name": "resp_rate",
+            "p": 1
+        },
+        {
+            "name": "systolic_bp",
+            "p": 1
+        },
+        {
+            "name": "diastolic_bp",
+            "p": 1
+        },
+        {
+            "name": "spo2",
+            "p": 1
+        },
+        {
+            "name": "sapsi",
+            "p": 1
+        },
+        {
+            "name": "sofa",
+            "p": 1
+        },
+        {
+            "name": "gcs",
+            "p": 1
+        },
+        {
+            "name": "braden",
+            "p": 1
+        },
+        {
+            "name": "sodium",
+            "p": 1
+        },
+        {
+            "name": "potassium",
+            "p": 1
+        },
+        {
+            "name": "chloride",
+            "p": 1
+        },
+        {
+            "name": "magnesium",
+            "p": 1
+        },
+        {
+            "name": "calcium",
+            "p": 1
+        },
+        {
+            "name": "anion_gap",
+            "p": 1
+        },
+        {
+            "name": "bun",
+            "p": 1
+        },
+        {
+            "name": "creatinine",
+            "p": 1
+        },
+        {
+            "name": "glucose",
+            "p": 1
+        },
+        {
+            "name": "ph",
+            "p": 1
+        },
+        {
+            "name": "be",
+            "p": 1
+        },
+        {
+            "name": "total_co2",
+            "p": 1
+        },
+        {
+            "name": "total_o2",
+            "p": 1
+        },
+        {
+            "name": "pco2",
+            "p": 1
+        },
+        {
+            "name": "po2",
+            "p": 1
+        },
+        {
+            "name": "wbc",
+            "p": 1
+        },
+        {
+            "name": "rbc",
+            "p": 1
+        },
+        {
+            "name": "hgb",
+            "p": 1
+        },
+        {
+            "name": "hct",
+            "p": 1
+        },
+        {
+            "name": "mcv",
+            "p": 1
+        },
+        {
+            "name": "mch",
+            "p": 1
+        },
+        {
+            "name": "mchc",
+            "p": 1
+        },
+        {
+            "name": "rdw",
+            "p": 1
+        },
+        {
+            "name": "plates",
+            "p": 1
+        },
+        {
+            "name": "neuts",
+            "p": 1
+        },
+        {
+            "name": "lymphs",
+            "p": 1
+        },
+        {
+            "name": "monos",
+            "p": 1
+        },
+        {
+            "name": "basos",
+            "p": 1
+        },
+        {
+            "name": "eos",
+            "p": 1
+        },
+        {
+            "name": "pt",
+            "p": 1
+        },
+        {
+            "name": "inr_pt",
+            "p": 1
+        },
+        {
+            "name": "ptt",
+            "p": 1
+        },
+        {
+            "name": "ckmb",
+            "p": 1
+        },
+        {
+            "name": "cpkmb",
+            "p": 1
+        },
+        {
+            "name": "ldh",
+            "p": 1
+        },
+        {
+            "name": "bnp",
+            "p": 1
+        },
+        {
+            "name": "tropi",
+            "p": 1
+        },
+        {
+            "name": "tropt",
+            "p": 1
+        },
+        {
+            "name": "total_bili",
+            "p": 1
+        },
+        {
+            "name": "direct_bili",
+            "p": 1
+        },
+        {
+            "name": "indirect_bili",
+            "p": 1
+        },
+        {
+            "name": "albumin",
+            "p": 1
+        },
+        {
+            "name": "tg",
+            "p": 1
+        }
+    ]
+}
