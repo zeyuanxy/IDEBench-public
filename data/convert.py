@@ -34,8 +34,9 @@ def workflow_to_job(workflow):
     dimensions = []
     group_by_columns = []
     for binning in workflow['binning']:
+        num_bins = int(binning.get('width', 0))
         dimension = BinningDimension(column=binning['dimension'],
-                                     num_bins=int(binning['width']),
+                                     num_bins=num_bins,
                                      binned_column='{}_bin'.format(binning['dimension']))
         dimensions.append(dimension)
         group_by_columns.append('{}_bin'.format(binning['dimension']))
