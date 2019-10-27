@@ -21,7 +21,8 @@ def workflow_to_job(workflow):
     has_filter = False
     if 'filter' in workflow:
         FilterDescription = operators.filter_pb2.Filter
-        filter = FilterDescription(filter=workflow['filter'])
+        filter_str = workflow['filter'].replace(' = ', ' == ')
+        filter = FilterDescription(filter=filter_str)
         filter_step = StepDescription(
             operator=operator_pb2.OperatorDescription(filter=filter),
             inputs=[StepInputDescription(type=InputType.Value('DATA'), index=0)])
