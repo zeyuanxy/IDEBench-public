@@ -2,7 +2,8 @@ import sys
 import json
 
 from google.protobuf.json_format import MessageToJson
-from davos.api import job_pb2, step_pb2, operators, operator_pb2, data_source_pb2
+from davos.api import job_pb2, step_pb2, operators, operator_pb2, data_source_pb2, data_pb2
+
 
 
 def workflow_to_job(workflow):
@@ -18,16 +19,16 @@ def workflow_to_job(workflow):
     job.sampling_strategy.MergeFrom(sampling_strategy)
 
     # filter
-    has_filter = False
+    next_input = StepInputDescription(type=InputType.Value('DATA'), index=0)
     if 'filter' in workflow:
         FilterDescription = operators.filter_pb2.Filter
         filter_str = workflow['filter'].replace(' = ', ' == ')
         filter = FilterDescription(filter=filter_str)
         filter_step = StepDescription(
             operator=operator_pb2.OperatorDescription(filter=filter),
-            inputs=[StepInputDescription(type=InputType.Value('DATA'), index=0)])
+            inputs=[next_input])
         job.steps.extend([filter_step])
-        has_filter = True
+        next_input = StepInputDescription(type=InputType.Value('STEP'), index=0)
 
     # binning
     BinningDescription = operators.binning_pb2.Binning
@@ -35,34 +36,40 @@ def workflow_to_job(workflow):
     dimensions = []
     group_by_columns = []
     for binning in workflow['binning']:
-        num_bins = int(binning.get('width', 0))
-        dimension = BinningDimension(column=binning['dimension'],
-                                     num_bins=num_bins,
-                                     binned_column='{}_bin'.format(binning['dimension']))
-        dimensions.append(dimension)
-        group_by_columns.append('{}_bin'.format(binning['dimension']))
-    binning = BinningDescription(dimensions=dimensions)
+        if 'width' in binning:
+            width = float(binning['width'])
+            tensor = operators.base_pb2.Tensor()
+            tensor.dim.extend([3])
+            tensor.type = data_pb2.DataType.Value('FLOAT')
+            tensor.is_null.extend([True, True, False])
+            tensor.float_value.extend([0, 0, width])
 
-    if has_filter:
-        input_type = InputType.Value('STEP')
-    else:
-        input_type = InputType.Value('DATA')
-    binning_step = StepDescription(
-        operator=operator_pb2.OperatorDescription(binning=binning),
-        inputs=[StepInputDescription(type=input_type, index=0)])
-    job.steps.extend([binning_step])
+            dimension = BinningDimension(column=binning['dimension'],
+                                         range=tensor,
+                                         binned_column='{}_bin'.format(binning['dimension']))
+            dimensions.append(dimension)
+            group_by_columns.append('{}_bin'.format(binning['dimension']))
+        else:
+            group_by_columns.append(binning['dimension'])
+
+    if dimensions:
+        binning = BinningDescription(dimensions=dimensions)
+
+        binning_step = StepDescription(
+            operator=operator_pb2.OperatorDescription(binning=binning),
+            inputs=[next_input])
+        job.steps.extend([binning_step])
+
+        if next_input.type == InputType.Value('DATA'):
+            next_input.type = InputType.Value('STEP')
+            next_input.index = 0
+        else:
+            next_input.index += 1
 
     # aggregation
     AggregationDescription = operators.aggregation_pb2.Aggregation
     AggregationDimension = AggregationDescription.AggregationDimension
     AggregationMethod = AggregationDescription.AggregationMethod
-
-    aggregation = AggregationDescription(
-        dimensions=[AggregationDimension(column='height', method=AggregationMethod.Value('AVERAGE_WITH_CI'),
-                                         aggregation_column='height_aggregation'),
-                    AggregationDimension(column='sex', method=AggregationMethod.Value('COUNT_WITH_CI'),
-                                         aggregation_column='sex_aggregation')],
-        group_by_columns=group_by_columns)
 
     dimensions = []
     for per_bin_aggregate in workflow['perBinAggregates']:
@@ -79,13 +86,9 @@ def workflow_to_job(workflow):
     aggregation = AggregationDescription(dimensions=dimensions,
                                          group_by_columns=group_by_columns)
 
-    if has_filter:
-        input_index = 1
-    else:
-        input_index = 0
     aggregation_step = StepDescription(
         operator=operator_pb2.OperatorDescription(aggregation=aggregation),
-        inputs=[StepInputDescription(type=InputType.Value('STEP'), index=input_index)])
+        inputs=[next_input])
     job.steps.extend([aggregation_step])
 
     return job
