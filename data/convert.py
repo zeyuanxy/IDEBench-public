@@ -76,12 +76,12 @@ def workflow_to_job(workflow):
         if per_bin_aggregate['type'] == 'count':
             dimension = AggregationDimension(column=workflow['binning'][0]['dimension'],
                                              method=AggregationMethod.Value('COUNT_WITH_CI'),
-                                             aggregation_column=workflow['binning'][0]['dimension'])
+                                             aggregation_column=workflow['binning'][0]['dimension'] + '_aggregation')
         else:
             assert per_bin_aggregate['type'] == 'avg'
             dimension = AggregationDimension(column=per_bin_aggregate['dimension'],
                                              method=AggregationMethod.Value('AVERAGE_WITH_CI'),
-                                             aggregation_column=per_bin_aggregate['dimension'])
+                                             aggregation_column=per_bin_aggregate['dimension'] + '_aggregation')
         dimensions.append(dimension)
     aggregation = AggregationDescription(dimensions=dimensions,
                                          group_by_columns=group_by_columns)
