@@ -6,7 +6,7 @@ from davos.api import job_pb2, step_pb2, operators, operator_pb2, data_source_pb
 
 
 
-def workflow_to_job(workflow):
+def workflow_to_job(schema, workflow):
     job = job_pb2.JobDescription()
 
     StepDescription = step_pb2.StepDescription
@@ -18,17 +18,24 @@ def workflow_to_job(workflow):
     sampling_strategy.full.SetInParent()
     job.sampling_strategy.MergeFrom(sampling_strategy)
 
+    # columns
+    columns = set()
+
     # filter
-    next_input = StepInputDescription(type=InputType.Value('DATA'), index=0)
+    next_input_index = 0
+    steps = []
     if 'filter' in workflow:
         FilterDescription = operators.filter_pb2.Filter
         filter_str = workflow['filter'].replace(' = ', ' == ')
         filter = FilterDescription(filter=filter_str)
         filter_step = StepDescription(
             operator=operator_pb2.OperatorDescription(filter=filter),
-            inputs=[next_input])
-        job.steps.extend([filter_step])
-        next_input = StepInputDescription(type=InputType.Value('STEP'), index=0)
+            inputs=[StepInputDescription(type=InputType.Value('STEP'), index=next_input_index)])
+        steps.append(filter_step)
+        next_input_index += 1
+        for field in schema["tables"]["fact"]["fields"]:
+            if field['field'] in filter_str:
+                columns.add(field['field'])
 
     # binning
     BinningDescription = operators.binning_pb2.Binning
@@ -49,22 +56,19 @@ def workflow_to_job(workflow):
                                          binned_column='{}_bin'.format(binning['dimension']))
             dimensions.append(dimension)
             group_by_columns.append('{}_bin'.format(binning['dimension']))
+            columns.add(binning['dimension'])
         else:
             group_by_columns.append(binning['dimension'])
+            columns.add(binning['dimension'])
 
     if dimensions:
         binning = BinningDescription(dimensions=dimensions)
 
         binning_step = StepDescription(
             operator=operator_pb2.OperatorDescription(binning=binning),
-            inputs=[next_input])
-        job.steps.extend([binning_step])
-
-        if next_input.type == InputType.Value('DATA'):
-            next_input.type = InputType.Value('STEP')
-            next_input.index = 0
-        else:
-            next_input.index += 1
+            inputs=[StepInputDescription(type=InputType.Value('STEP'), index=next_input_index)])
+        steps.append(binning_step)
+        next_input_index += 1
 
     # aggregation
     AggregationDescription = operators.aggregation_pb2.Aggregation
@@ -82,25 +86,40 @@ def workflow_to_job(workflow):
             dimension = AggregationDimension(column=per_bin_aggregate['dimension'],
                                              method=AggregationMethod.Value('AVERAGE_WITH_CI'),
                                              aggregation_column=per_bin_aggregate['dimension'] + '_aggregation')
+            columns.add(per_bin_aggregate['dimension'])
         dimensions.append(dimension)
     aggregation = AggregationDescription(dimensions=dimensions,
                                          group_by_columns=group_by_columns)
 
     aggregation_step = StepDescription(
         operator=operator_pb2.OperatorDescription(aggregation=aggregation),
-        inputs=[next_input])
-    job.steps.extend([aggregation_step])
+        inputs=[StepInputDescription(type=InputType.Value('STEP'), index=next_input_index)])
+    steps.append(aggregation_step)
+
+    # projection
+    ProjectionDescription = operators.projection_pb2.Projection
+
+    projection = ProjectionDescription(columns=list(columns))
+    projection_step = StepDescription(
+        operator=operator_pb2.OperatorDescription(projection=projection),
+        inputs=[StepInputDescription(type=InputType.Value('DATA'), index=0)])
+    steps = [projection_step] + steps
+
+    job.steps.extend(steps)
 
     return job
 
 
 if __name__ == "__main__":
     input_path = sys.argv[1]
-    output_path = sys.argv[2]
+    schema_path = sys.argv[2]
+    output_path = sys.argv[3]
 
     # jobs
     with open(input_path, 'r') as f:
         workflows = json.load(f)
+    with open(schema_path, 'r') as f:
+        schema = json.load(f)
     jobs = []
     viz = {}
     for workflow in workflows['interactions']:
@@ -108,7 +127,7 @@ if __name__ == "__main__":
             viz[workflow['name']] = workflow
         else:
             workflow = {**workflow, **viz[workflow['name']]}
-        job = workflow_to_job(workflow)
+        job = workflow_to_job(schema, workflow)
         jobs.append(MessageToJson(job))
 
     with open(output_path, 'w') as f:
