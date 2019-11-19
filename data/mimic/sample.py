@@ -63,3 +63,9 @@ with open('create_table.sql', 'w') as f:
     f.write("CREATE TABLE tbl_mimic ({});\n".format(','.join(sql_types)))
     file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "mimic.csv")
     f.write("COPY OFFSET 2 INTO tbl_mimic FROM '{}' DELIMITERS ',','\\n','\"';\n".format(file_path))
+
+with open('create_table_duckdb.sql', 'w') as f:
+    f.write("DROP TABLE IF EXISTS tbl_mimic;\n")
+    f.write("CREATE TABLE tbl_mimic ({});\n".format(','.join(sql_types)))
+    file_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "mimic.csv")
+    f.write("COPY tbl_mimic FROM '{}' WITH HEADER\n".format(file_path))
